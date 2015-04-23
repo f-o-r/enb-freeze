@@ -1,0 +1,35 @@
+{
+  "name": "enb-freeze",
+  "version": "1.0.0",
+  "author": "Dmitry Moskowski <me@corpix.ru>",
+  "description": "Common freeze techs for enb-make",
+  "license": "MIT",
+  "main": "index.js",
+  "keywords": [
+    "enb",
+    "freeze"
+  ],
+  "devDependencies": {
+    "enb": ">= 0.8.22",
+    "jshint": "^2.4.1",
+    "mocha": "^1.17.0",
+    "must": "^0.10.0",
+    "mock-fs": "^2.5.0",
+    "chai-spies": "^0.5.1"
+  },
+  "contributors": [
+    {
+      "name": "Dmitry Moskowski",
+      "email": "me@corpix.ru"
+    }
+  ],
+  "scripts": {
+    "test": "make test"
+  },
+  "engines": {
+    "node": "> 0.10.0"
+  },
+  "peerDependencies": {
+    "enb": ">= 0.8.22"
+  }
+}
