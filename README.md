@@ -1,4 +1,4 @@
-enb-freeze
+enb-freeze [![Build Status](https://travis-ci.org/MRKTLAB/enb-freeze.svg?branch=master)](https://travis-ci.org/MRKTLAB/enb-freeze)
 ==============
 
 Технологии для фриза через enb.
