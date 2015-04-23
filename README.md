@@ -142,6 +142,7 @@ include c.real
 
 [freeze-dir-opt]: #freezeDir
 [hash-opt]: #hash
+[digest-opt]: #digest
 [create-hash-algo-link]: https://nodejs.org/api/crypto.html#crypto_crypto_createhash_algorithm
 [freeze-path-postprocess-opt]: #freezePathPostprocess
 [wait-for-targets-opt]: #waitForTargets
