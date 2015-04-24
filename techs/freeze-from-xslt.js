@@ -9,12 +9,12 @@ var T_NL = '\n';
 
 module.exports = require('../lib/base_tech').buildFlow()
     .name('freeze-from-xslt')
-    .defineOption('recursorRegex', /["']([^"']+\.xsl)["']/) // Матчит импорт xsl файлов и обрабатывает их рекурсивно
+    .defineOption('recursorRegex', /["']([^"']+\.(xsl|ent))["']/) // Матчит импорт xsl файлов и обрабатывает их рекурсивно
     .defineOption('freezeRegex',   /["']([^"']+\.(css|js|png|jp?g|gif))["']/) // Матчит штуки, которые можно зафризить
     .methods({
         // Пути к статике в xsl начинаются от корня проекта, поддержим это
         getFreezablePathsBase: function(carrier, suffix) {
-            if(suffix === 'xsl') {
+            if(suffix === 'xsl' || suffix === 'ent') {
                 // Импорты внутри xsl(смотри recursorRegex) относительные
                 return path.dirname(carrier);
             } else {

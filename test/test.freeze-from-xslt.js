@@ -42,13 +42,16 @@ describe('techs', function () {
         });
 
         describe('#getFreezablePathsBase', function() {
-            var ctx = {
-                node: {
-                    getRootDir: function() {
-                        return '/';
+            var ctx;
+            beforeEach(function() {
+                ctx = {
+                    node: {
+                        getRootDir: function() {
+                            return '/';
+                        }
                     }
-                }
-            };
+                };
+            });
 
             it('xsl suffix check', function() {
                 '/foo/bar'.should.equal(
@@ -74,6 +77,16 @@ describe('techs', function () {
                     tech.matchRecursor('<xsl:import href="/path/to/file.xsl"/>')[0]
                         .should
                         .equal('path/to/file.xsl');
+                });
+                it('match ent relative', function() {
+                    tech.matchRecursor('<!DOCTYPE xsl:stylesheet SYSTEM "path/to/file.ent">')[0]
+                        .should
+                        .equal('path/to/file.ent');
+                });
+                it('match ent absolute', function() {
+                    tech.matchRecursor('<!DOCTYPE xsl:stylesheet SYSTEM "/path/to/file.ent">')[0]
+                        .should
+                        .equal('path/to/file.ent');
                 });
                 it('not match', function() {
                     expect(tech.matchRecursor('<xsl:import href="path/to/file.ololo"/>'))
