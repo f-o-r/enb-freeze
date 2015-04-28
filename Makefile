@@ -6,6 +6,6 @@ all: npm test
 npm:
 	npm install
 test: npm
-	$(NPM_BIN)/mocha --recursive test
+	$(NPM_BIN)/mocha --check-leaks --recursive test
 
 .PHONY: all npm test

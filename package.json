@@ -14,7 +14,7 @@
     "jshint": "^2.4.1",
     "mocha": "^1.17.0",
     "must": "^0.10.0",
-    "mock-fs": "^2.5.0",
+    "mock-fs": "git://github.com/tschaub/mock-fs.git#d3c741ec4e8767fdb962dba7f14a2ed089d744dc",
     "chai": "2.2.0",
     "chai-spies": "^0.5.1"
   },
@@ -32,5 +32,8 @@
   },
   "peerDependencies": {
     "enb": ">= 0.8.22"
+  },
+  "dependencies": {
+    "inherit": "^2.2.2"
   }
 }
