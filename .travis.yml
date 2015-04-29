@@ -1,11 +1,11 @@
----
 language: node_js
-script: "make test"
-
+script: make test
 node_js:
-  - "0.10"
-  - "0.12"
-  - "iojs"
-
+- '0.10'
+- '0.12'
+- iojs
 before_install:
-  - npm install -g npm@latest
+- npm install -g npm@latest
+notifications:
+  slack:
+    secure: USKhC5xGC73eGdNTOw2sr4XWZ6MXFDeFOH5W9mtZwJG3RdYKWvHihbl/cM+vK//iPfrNRcoYJhAMGVnIWF7pQ5vLEuvQrQ0KspuygE8ceZK0J3DoKjfjYLv4jUYUl6hGY2zo8Kqht9SDZ97Y5OocAh3+wypVRfQ8XkInXL2ufQw=
