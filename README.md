@@ -1,4 +1,4 @@
-enb-freeze [![Build Status](https://travis-ci.org/MRKTLAB/enb-freeze.svg?branch=master)](https://travis-ci.org/MRKTLAB/enb-freeze)
+enb-freeze [![Build Status](https://travis-ci.org/f-o-r/enb-freeze.svg?branch=master)](https://travis-ci.org/f-o-r/enb-freeze)
 ==============
 
 Технологии для фриза через enb.
@@ -41,6 +41,7 @@ nodeConfig.addTechs([
   - `freezePathPostprocess`(`null`) [Функция][freeze-path-postprocess-opt] постпроцессинга
   - `waitForTargets`(`[]`) [Список целей][wait-for-targets-opt] enb для ожидания
   - `waitForNodeTargets`(`{}`) Словарь, [сопсотовляющий цели узлам][wait-node-targets-opt], которые следует подождать
+  - `grammarBlockComments`(`[]`) Пара(`['/*', '*/']`), содержащая символы начала и конца комментария соответственно
 
 #### freezeDir
 Служит для определения директории, в которую будут записаны фризовые файлы.

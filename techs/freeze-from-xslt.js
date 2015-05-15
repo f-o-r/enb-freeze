@@ -11,10 +11,11 @@ module.exports = require('../lib/base_tech').buildFlow()
     .name('freeze-from-xslt')
     .defineOption('recursorRegex', /["']([^"']+\.(xsl|ent))["']/) // Матчит импорт xsl файлов и обрабатывает их рекурсивно
     .defineOption('freezeRegex',   /["']([^"']+\.(css|js|png|jp?g|gif))["']/) // Матчит штуки, которые можно зафризить
+    .defineOption('blockComments', ['<!--', '-->'])
     .methods({
         // Пути к статике в xsl начинаются от корня проекта, поддержим это
         getFreezablePathsBase: function(carrier, suffix) {
-            if(suffix === 'xsl' || suffix === 'ent') {
+            if(suffix.match(/xsl$/) || suffix.match(/ent$/)) {
                 // Импорты внутри xsl(смотри recursorRegex) относительные
                 return path.dirname(carrier);
             } else {
@@ -23,8 +24,8 @@ module.exports = require('../lib/base_tech').buildFlow()
             }
         },
 
-        matchRecursor: function(line) {
-            var match = this._recursorRegex.exec(line);
+        matchRecursor: function(node) {
+            var match = this._recursorRegex.exec(node.data.match);
             if(match == null) {
                 return null;
             }
@@ -32,8 +33,8 @@ module.exports = require('../lib/base_tech').buildFlow()
             return [match[1].replace(/^\//, '')];
         },
 
-        matchFreeze: function(line) {
-            var match = this._freezeRegex.exec(line);
+        matchFreeze: function(node) {
+            var match = this._freezeRegex.exec(node.data.match);
             if(match == null) {
                 return null;
             }
@@ -46,12 +47,12 @@ module.exports = require('../lib/base_tech').buildFlow()
             return [exMatch.replace(/^\//, '')];
         },
 
-        postprocessMatchedLine: function(parent, carrier, oldLine, newLine, match, index) {
+        postprocessMatchedValue: function(parent, carrier, oldValue, newValue, match, index) {
             if(!this._debug) {
-                return newLine;
+                return newValue;
             }
 
-            var indent = newLine.match(/^(\s+)/);
+            var indent = newValue.match(/^(\s+)/);
             if(indent) {
                 indent = indent[1];
             } else {
@@ -59,7 +60,7 @@ module.exports = require('../lib/base_tech').buildFlow()
             }
             return [
                 indent + '<!-- ' + this.getName() + ' ' + match.join() + ' -->',
-                newLine
+                newValue
             ].join(T_NL);
         }
     })

@@ -3,7 +3,7 @@ var mock = require('mock-fs');
 var fs = require('fs');
 var path = require('path');
 var TestNode = require('enb/lib/test/mocks/test-node');
-var Tech = require('../lib/base_tech.js');
+var Tech = require('../lib/base_tech');
 var FileList = require('enb/lib/file-list');
 var sep = require('path').sep;
 
@@ -21,6 +21,10 @@ describe('techs', function () {
         var tech;
         var node;
         var fileList;
+        var match = [];
+        var origTPostprocessor;
+        var origFPPostprocessor;
+
         beforeEach(function() {
             mock({
                 '/blocks': {
@@ -48,10 +52,23 @@ describe('techs', function () {
             };
 
             tech.configure();
+            tech._grammar = tech.createGrammar();
+
+            match[0] = tech.matchRecursor;
+            match[1] = tech.matchFreeze;
+            tech.matchRecursor = function(){};
+            tech.matchFreeze = function(){};
+            origTPostprocessor = tech.postprocessMatchedToken;
+            origFPPostprocessor = tech.postprocessFreezePath;
         });
 
         afterEach(function() {
             mock.restore();
+
+            tech.matchRecursor = match[0];
+            tech.matchFreeze = match[1];
+            tech.postprocessMatchedToken = origTPostprocessor;
+            tech.postprocessFreezePath = origFPPostprocessor;
         });
 
         describe('#getChecksumOf', function() {
@@ -139,6 +156,31 @@ describe('techs', function () {
             });
         });
 
+        describe('#postprocessMatchedToken', function() {
+            it('should return value as is', function() {
+                expect(
+                    tech.postprocessMatchedValue('', '', '', 'foo', null, 0)
+                ).to.be.equal('foo');
+            });
+        });
+
+        describe('#getFileProcessor', function() {
+            it('should return function', function() {
+                expect(typeof tech.getFileProcessor()).to.be.equal('function');
+            });
+
+            it('should return valid result', function(done) {
+                var proc = tech.getFileProcessor('foo', 'bar');
+
+                proc.call(tech, 'some content')
+                    .then(function(data) {
+                        expect(data).to.be.equal('some content');
+                        done();
+                    })
+                    .fail(done);
+            });
+        });
+
         describe('#postprocessFreezePath', function() {
             it('should call fn from options', function() {
                 var spy = function() {return 'foo';};
@@ -178,25 +220,12 @@ describe('techs', function () {
             });
         });
 
-        describe('#processLine', function() {
-            var match = [];
-            beforeEach(function() {
-                match[0] = tech.matchRecursor;
-                match[1] = tech.matchFreeze;
-                tech.matchRecursor = function(){};
-                tech.matchFreeze = function(){};
-            });
-
-            afterEach(function() {
-                tech.matchRecursor = match[0];
-                tech.matchFreeze = match[1];
-            });
-
+        describe('#processToken', function() {
             it('Should process files recursively', function(done) {
                 var resolve = isolate(done);
 
-                tech.matchRecursor = function(line) {
-                    var m = line.match(/([a-z-\/\.]+\.[a-z-\.]+)/);
+                tech.matchRecursor = function(node) {
+                    var m = node.data.match.match(/([a-z-\/\.]+\.[a-z-\.]+)/);
                     if(!m) {
                         return [];
                     } else {
@@ -204,9 +233,13 @@ describe('techs', function () {
                     }
                 };
 
-
+                var node = {
+                    token: 1,
+                    data: {match: 'blocks/xxx.some-tech', length: 20, start: 8, end: 28},
+                    content: []
+                };
                 var res = tech
-                    .processLine('/some.file', '/some.file', 'include blocks/xxx.some-tech', 0);
+                    .processToken('/some.file', '/some.file', node, 0);
 
                 res
                     .then(function(freezeStruct) {

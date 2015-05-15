@@ -1,26 +1,10 @@
-require('chai').should();
-
 var expect = require('chai').expect;
 var mock = require('mock-fs');
 var TestNode = require('enb/lib/test/mocks/test-node');
 var XslTech = require('../techs/freeze-from-xslt');
 var FileList = require('enb/lib/file-list');
 var sep = require('path').sep;
-
-function repeat(s, n) {
-    var res = '';
-    for(var i = 0; i < n; i++) {
-        res += s;
-    }
-    return res;
-}
-
-describe('repeat helper', function() {
-    it('valid', function() {
-        repeat(' ', 5).should.equal('     ');
-        repeat('1', 1).should.equal('1');
-    });
-});
+var helpers = require('../lib/helpers');
 
 describe('techs', function () {
     describe('freeze-from-xslt', function () {
@@ -54,13 +38,13 @@ describe('techs', function () {
             });
 
             it('xsl suffix check', function() {
-                '/foo/bar'.should.equal(
+                expect('/foo/bar').to.be.equal(
                     tech.getFreezablePathsBase.call(ctx, '/foo/bar/baz.xsl', 'xsl')
                 );
             });
 
             it('others suffix check', function() {
-                '/'.should.equal(
+                expect('/').equal(
                     tech.getFreezablePathsBase.call(ctx, '/foo/bar/baz.xsl', 'css')
                 );
             });
@@ -69,58 +53,58 @@ describe('techs', function () {
         describe('matchers', function() {
             describe('#matchRecursor', function() {
                 it('match xsl relative', function() {
-                    tech.matchRecursor('<xsl:import href="path/to/file.xsl"/>')[0]
-                        .should
+                    expect(tech.matchRecursor({data: {match: '<xsl:import href="path/to/file.xsl"/>'}})[0])
+                        .to.be
                         .equal('path/to/file.xsl');
                 });
                 it('match xsl absolute', function() {
-                    tech.matchRecursor('<xsl:import href="/path/to/file.xsl"/>')[0]
-                        .should
+                    expect(tech.matchRecursor({data: {match: '<xsl:import href="/path/to/file.xsl"/>'}})[0])
+                        .to.be
                         .equal('path/to/file.xsl');
                 });
                 it('match ent relative', function() {
-                    tech.matchRecursor('<!DOCTYPE xsl:stylesheet SYSTEM "path/to/file.ent">')[0]
-                        .should
+                    expect(tech.matchRecursor({data: {match: '<!DOCTYPE xsl:stylesheet SYSTEM "path/to/file.ent">'}})[0])
+                        .to.be
                         .equal('path/to/file.ent');
                 });
                 it('match ent absolute', function() {
-                    tech.matchRecursor('<!DOCTYPE xsl:stylesheet SYSTEM "/path/to/file.ent">')[0]
-                        .should
+                    expect(tech.matchRecursor({data: {match: '<!DOCTYPE xsl:stylesheet SYSTEM "/path/to/file.ent">'}})[0])
+                        .to.be
                         .equal('path/to/file.ent');
                 });
                 it('not match', function() {
-                    expect(tech.matchRecursor('<xsl:import href="path/to/file.ololo"/>'))
+                    expect(tech.matchRecursor({data: {match: '<xsl:import href="path/to/file.ololo"/>'}}))
                         .to.be.equal(null);
                 });
             });
 
             describe('#matchFreeze', function() {
                 it('match static relative', function() {
-                    tech.matchFreeze('<script src="path/to/file.js"/>')[0]
-                        .should
+                    expect(tech.matchFreeze({data: {match: '<script src="path/to/file.js"/>'}})[0])
+                        .to.be
                         .equal('path/to/file.js');
                 });
                 it('match xsl absolute', function() {
-                    tech.matchFreeze('<script src="/path/to/file.js"/>')[0]
-                        .should
+                    expect(tech.matchFreeze({data: {match: '<script src="/path/to/file.js"/>'}})[0])
+                        .to.be
                         .equal('path/to/file.js');
                 });
                 it('do not match schema', function() {
-                    expect(tech.matchFreeze('<script src="//path/to/file.js"/>'))
+                    expect(tech.matchFreeze({data: {match: '<script src="//path/to/file.js"/>'}}))
                         .to.be.equal(null);
-                    expect(tech.matchFreeze('<script src="http://path/to/file.js"/>'))
+                    expect(tech.matchFreeze({data: {match: '<script src="http://path/to/file.js"/>'}}))
                         .to.be.equal(null);
-                    expect(tech.matchFreeze('<script src="https://path/to/file.js"/>'))
+                    expect(tech.matchFreeze({data: {match: '<script src="https://path/to/file.js"/>'}}))
                         .to.be.equal(null);
                 });
                 it('not match', function() {
-                    expect(tech.matchFreeze('<xsl:import href="path/to/file.ololo"/>'))
+                    expect(tech.matchFreeze({data: {match: '<xsl:import href="path/to/file.ololo"/>'}}))
                         .to.be.equal(null);
                 });
             });
         });
 
-        describe('#postprocessMatchedLine', function() {
+        describe('#postprocessMatchedValue', function() {
             var debug;
             beforeEach(function() {
                 debug = tech._debug;
@@ -133,15 +117,15 @@ describe('techs', function () {
 
             it('should not alter line', function() {
                 tech._debug = false;
-                var line = tech.postprocessMatchedLine('/', '/foo.xsl', '/foo.xsl', '/boo.xsl', ['/foo.xsl'], 0);
-                line.should.equal('/boo.xsl');
+                var line = tech.postprocessMatchedValue('/', '/foo.xsl', '/foo.xsl', '/boo.xsl', ['/foo.xsl'], 0);
+                expect(line).to.be.equal('/boo.xsl');
             });
 
             it('valid comment indentation', function() {
                 tech._debug = true;
-                var indent = repeat(' ', 16);
-                var twoLines = tech.postprocessMatchedLine('/', '/foo.xsl', '/foo.xsl', indent + '/boo.xsl', ['/foo.xsl'], 0);
-                twoLines.split('\n')[1].should.equal(indent + '/boo.xsl');
+                var indent = helpers.repeat(' ', 16);
+                var twoLines = tech.postprocessMatchedValue('/', '/foo.xsl', '/foo.xsl', indent + '/boo.xsl', ['/foo.xsl'], 0);
+                expect(twoLines.split('\n')[1]).to.be.equal(indent + '/boo.xsl');
             });
         });
     });
