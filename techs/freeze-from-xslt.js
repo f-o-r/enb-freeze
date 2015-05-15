@@ -45,23 +45,6 @@ module.exports = require('../lib/base_tech').buildFlow()
             }
 
             return [exMatch.replace(/^\//, '')];
-        },
-
-        postprocessMatchedValue: function(parent, carrier, oldValue, newValue, match, index) {
-            if(!this._debug) {
-                return newValue;
-            }
-
-            var indent = newValue.match(/^(\s+)/);
-            if(indent) {
-                indent = indent[1];
-            } else {
-                indent = '';
-            }
-            return [
-                indent + '<!-- ' + this.getName() + ' ' + match.join() + ' -->',
-                newValue
-            ].join(T_NL);
         }
     })
     .createTech();
