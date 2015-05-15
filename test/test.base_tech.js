@@ -71,7 +71,7 @@ describe('techs', function () {
             tech.postprocessFreezePath = origFPPostprocessor;
         });
 
-        describe('#getChecksumOf', function() {
+        describe('getChecksumOf', function() {
             var digest;
             beforeEach(function() {
                 digest = tech._digest;
@@ -92,7 +92,7 @@ describe('techs', function () {
             });
         });
 
-        describe('#digest', function() {
+        describe('digest', function() {
             it('check sha1 digest', function() {
                 var crypto = require('crypto');
                 var h = crypto.createHash('sha1');
@@ -102,7 +102,7 @@ describe('techs', function () {
             });
         });
 
-        describe('#getSuffix', function() {
+        describe('getSuffix', function() {
             it('validate', function() {
                 expect(tech.getSuffix('/foo/bar.baz')).equal('baz');
                 expect(tech.getSuffix('/foo/bar.das.baz')).equal('das.baz');
@@ -113,7 +113,7 @@ describe('techs', function () {
             });
         });
 
-        describe('#getFreezeDir', function() {
+        describe('getFreezeDir', function() {
             it('should call function from options', function() {
                 tech._freezeDir = function() { return 'foo'; };
 
@@ -140,7 +140,7 @@ describe('techs', function () {
             });
         });
 
-        describe('#freeze', function() {
+        describe('freeze', function() {
             it('create file system elements', function(done) {
                 var resolve = isolate(done);
 
@@ -156,7 +156,7 @@ describe('techs', function () {
             });
         });
 
-        describe('#postprocessMatchedToken', function() {
+        describe('postprocessMatchedToken', function() {
             it('should return value as is', function() {
                 expect(
                     tech.postprocessMatchedValue('', '', '', 'foo', null, 0)
@@ -164,7 +164,7 @@ describe('techs', function () {
             });
         });
 
-        describe('#getFileProcessor', function() {
+        describe('getFileProcessor', function() {
             it('should return function', function() {
                 expect(typeof tech.getFileProcessor()).to.be.equal('function');
             });
@@ -181,7 +181,7 @@ describe('techs', function () {
             });
         });
 
-        describe('#postprocessFreezePath', function() {
+        describe('postprocessFreezePath', function() {
             it('should call fn from options', function() {
                 var spy = function() {return 'foo';};
                 tech._freezePathPostprocess = spy;
@@ -208,19 +208,19 @@ describe('techs', function () {
             });
         });
 
-        describe('#getFreezablePathsBase', function() {
+        describe('getFreezablePathsBase', function() {
             it('validate', function() {
                 expect(tech.getFreezablePathsBase('/foo/bar')).equal('/foo');
             });
         });
 
-        describe('#replaceMatch', function() {
+        describe('replaceMatch', function() {
             it('validate', function() {
                 expect(tech.replaceMatch('123 foo', 'foo', 'bar')).equal('123 bar');
             });
         });
 
-        describe('#processToken', function() {
+        describe('processToken', function() {
             it('Should process files recursively', function(done) {
                 var resolve = isolate(done);
 

@@ -25,7 +25,7 @@ describe('techs', function () {
             tech.configure();
         });
 
-        describe('#getFreezablePathsBase', function() {
+        describe('getFreezablePathsBase', function() {
             var ctx;
             beforeEach(function() {
                 ctx = {
@@ -51,7 +51,7 @@ describe('techs', function () {
         });
 
         describe('matchers', function() {
-            describe('#matchRecursor', function() {
+            describe('matchRecursor', function() {
                 it('match xsl relative', function() {
                     expect(tech.matchRecursor({data: {match: '<xsl:import href="path/to/file.xsl"/>'}})[0])
                         .to.be
@@ -78,7 +78,7 @@ describe('techs', function () {
                 });
             });
 
-            describe('#matchFreeze', function() {
+            describe('matchFreeze', function() {
                 it('match static relative', function() {
                     expect(tech.matchFreeze({data: {match: '<script src="path/to/file.js"/>'}})[0])
                         .to.be
@@ -104,7 +104,7 @@ describe('techs', function () {
             });
         });
 
-        describe('#postprocessMatchedValue', function() {
+        describe('postprocessMatchedValue', function() {
             var debug;
             beforeEach(function() {
                 debug = tech._debug;
