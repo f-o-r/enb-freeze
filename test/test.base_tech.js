@@ -254,6 +254,38 @@ describe('techs', function () {
                     })
                     .fail(done);
             });
+
+            it('Should process `matchFreeze` entities correctly', function(done) {
+                var resolve = isolate(done);
+
+                tech.matchFreeze = function(node) {
+                    var m = node.data.match.match(/(.+\.some-tech)$/);
+                    if(!m) {
+                        return [];
+                    } else {
+                        return [m[1]];
+                    }
+                };
+
+                var node = {
+                    token: 1,
+                    data: {match: 'blocks/xxx.some-tech', length: 20, start: 8, end: 28},
+                    content: []
+                };
+                var res = tech
+                    .processToken('/some.file', '/some.file', node, 0);
+
+                res
+                    .then(function(freezeStruct) {
+                        [
+                            '/18575f166ba6ea3156907f31a46f160aa8419d06.some-tech'
+                        ].forEach(function(p) {
+                            expect(fs.existsSync(p)).equal(true);
+                        });
+                        resolve();
+                    })
+                    .fail(done);
+            });
         });
     });
 });
