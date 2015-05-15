@@ -82,14 +82,21 @@ describe('lib', function () {
             });
 
             describe('flatten', function() {
-                it('should carefuly flatten nested array', function() {
-                    var recursive = [[1,[2]], [[[[[3]],[4]]]], [5]];
-                    var flat = [1, 2, 3, 4, 5];
-                    expect(grammar.AST.flatten(recursive)).to.deep.equal(flat);
-                });
-                it('should carefuly flatten nested array even if other types inside', function() {
-                    var recursive = [[1,[2]], [[[[[3]],[4]]]], [5,[],{}]];
-                    var flat = [1, 2, 3, 4, 5, {}];
+                it('should carefuly flatten nested AST', function() {
+                    var recursive = [
+                            grammar.AST.createNode(1, {match: 'a', length: 1, start: 1, end: 2}, [
+                                grammar.AST.createNode(1, {match: 'b', length: 1, start: 2, end: 3}, [
+                                    grammar.AST.createNode(0, {match: 'c', length: 1, start: 3, end: 4})
+                                ]),
+                                grammar.AST.createNode(1, {match: 'd', length: 1, start: 4, end: 5})
+                            ])
+                    ];
+                    var flat = [
+                        grammar.AST.createNode(1, {match: 'a', length: 1, start: 1, end: 2}, []),
+                        grammar.AST.createNode(1, {match: 'b', length: 1, start: 2, end: 3}, []),
+                        grammar.AST.createNode(0, {match: 'c', length: 1, start: 3, end: 4}, []),
+                        grammar.AST.createNode(1, {match: 'd', length: 1, start: 4, end: 5}, []),
+                    ];
                     expect(grammar.AST.flatten(recursive)).to.deep.equal(flat);
                 });
             });
