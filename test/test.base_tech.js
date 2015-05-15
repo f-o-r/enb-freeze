@@ -145,7 +145,7 @@ describe('techs', function () {
                 var resolve = isolate(done);
 
                 tech
-                    .freeze('zzz.some-tech', 'zzz.some-tech', 'i am the value')
+                    .freezeContent('zzz.some-tech', 'zzz.some-tech', 'i am the value')
                     .then(function(freezePair) {
                         expect(freezePair[0]).equal('/6c63b05bd556fdcf45463f5f3d0c2095255db930.some-tech');
                         expect(fs.existsSync('/6c63b05bd556fdcf45463f5f3d0c2095255db930.some-tech')).equal(true);

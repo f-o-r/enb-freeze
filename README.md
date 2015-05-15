@@ -137,10 +137,6 @@ include c.real
 `waitForNodeTargets: {common: ['?.css', '?.js']}`
 
 
-# TODO
-
-  - [ ] Результаты `matchFreeze` && `matchRecursor` конкатятся внутри, нужно объеденить их под одним названием - `matchRecursor`
-
 [freeze-dir-opt]: #freezeDir
 [hash-opt]: #hash
 [digest-opt]: #digest
