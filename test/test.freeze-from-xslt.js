@@ -120,13 +120,6 @@ describe('techs', function () {
                 var line = tech.postprocessMatchedValue('/', '/foo.xsl', '/foo.xsl', '/boo.xsl', ['/foo.xsl'], 0);
                 expect(line).to.be.equal('/boo.xsl');
             });
-
-            it('valid comment indentation', function() {
-                tech._debug = true;
-                var indent = helpers.repeat(' ', 16);
-                var twoLines = tech.postprocessMatchedValue('/', '/foo.xsl', '/foo.xsl', indent + '/boo.xsl', ['/foo.xsl'], 0);
-                expect(twoLines.split('\n')[1]).to.be.equal(indent + '/boo.xsl');
-            });
         });
     });
 });
