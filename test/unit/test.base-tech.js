@@ -51,7 +51,7 @@ describe('unit', function() {
 
                 it('alphanum digest option', function() {
                     base._digest = 'alphanum';
-                    expect(base.getChecksumOf('foo')).equal('rwtvsvvr93tk7s18tqa9');
+                    expect(base.getChecksumOf('foo').toString('utf8')).equal('rwtvsvvr93tk7s18tqa9');
                 });
             });
 
