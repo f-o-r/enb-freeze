@@ -3,7 +3,7 @@ var mock = require('mock-fs');
 var fs = require('fs');
 var path = require('path');
 var TestNode = require('enb/lib/test/mocks/test-node');
-var Tech = require('../lib/base_tech');
+var Tech = require('../../lib/base_tech');
 var FileList = require('enb/lib/file-list');
 var sep = require('path').sep;
 

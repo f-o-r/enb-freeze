@@ -4,8 +4,8 @@ var TestNode = require('enb/lib/test/mocks/test-node');
 var FileList = require('enb/lib/file-list');
 var sep = require('path').sep;
 
-var helpers = require('../lib/helpers');
-var grammar = require('../lib/grammar');
+var helpers = require('../../lib/helpers');
+var grammar = require('../../lib/grammar');
 
 // DEBUG
 var util = require('util');
@@ -196,7 +196,7 @@ describe('lib', function () {
                         [grammar.TOKENS.T_RAW,  grammar.tokenMatchers.any]
                     ]
                 });
-                expect(parser.parse('foo<xxx>inner</xxx>bar')).to.deep.equal(require('./fixtures/grammar.ast.0001.js'));
+                expect(parser.parse('foo<xxx>inner</xxx>bar')).to.deep.equal(require('../fixtures/grammar.ast.0001.js'));
             });
 
 
@@ -213,7 +213,7 @@ describe('lib', function () {
                         [grammar.TOKENS.T_RAW,  grammar.tokenMatchers.any]
                     ]
                 });
-                expect(parser.parse('foo<xxx>in<xxx>n</xxx>er</xxx>bar')).to.deep.equal(require('./fixtures/grammar.ast.0002.js'));
+                expect(parser.parse('foo<xxx>in<xxx>n</xxx>er</xxx>bar')).to.deep.equal(require('../fixtures/grammar.ast.0002.js'));
             });
 
 
@@ -231,7 +231,7 @@ describe('lib', function () {
                         [grammar.TOKENS.T_RAW,  grammar.tokenMatchers.any]
                     ]
                 });
-                expect(parser.parse('foo\n<!-- comment -->\nbar baz')).to.deep.equal(require('./fixtures/grammar.ast.0003.js'));
+                expect(parser.parse('foo\n<!-- comment -->\nbar baz')).to.deep.equal(require('../fixtures/grammar.ast.0003.js'));
             });
 
         });

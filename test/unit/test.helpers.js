@@ -4,7 +4,7 @@ var TestNode = require('enb/lib/test/mocks/test-node');
 var FileList = require('enb/lib/file-list');
 var sep = require('path').sep;
 
-var helpers = require('../lib/helpers');
+var helpers = require('../../lib/helpers');
 
 describe('lib', function () {
     describe('helpers', function () {

@@ -1,10 +1,10 @@
 var expect = require('chai').expect;
 var mock = require('mock-fs');
 var TestNode = require('enb/lib/test/mocks/test-node');
-var XslTech = require('../techs/freeze-from-xslt');
+var XslTech = require('../../techs/freeze-from-xslt');
 var FileList = require('enb/lib/file-list');
 var sep = require('path').sep;
-var helpers = require('../lib/helpers');
+var helpers = require('../../lib/helpers');
 
 describe('techs', function () {
     describe('freeze-from-xslt', function () {
