@@ -2,12 +2,7 @@
 
 var path = require('path');
 
-var vow = require('enb/node_modules/vow');
-var vowFs = require('enb/node_modules/vow-fs');
-
-var T_NL = '\n';
-
-module.exports = require('../lib/base_tech').buildFlow()
+module.exports = require('../lib/base-tech').buildFlow()
     .name('freeze-from-xslt')
     .defineOption('recursorRegex', /["']([^"']+\.(xsl|ent))["']/) // Матчит импорт xsl файлов и обрабатывает их рекурсивно
     .defineOption('freezeRegex',   /["']([^"']+\.(css|js|png|jp?g|gif))["']/) // Матчит штуки, которые можно зафризить
@@ -26,16 +21,16 @@ module.exports = require('../lib/base_tech').buildFlow()
 
         matchRecursor: function(node) {
             var match = this._recursorRegex.exec(node.data.match);
-            if(match == null) {
+            if(!match) {
                 return null;
             }
 
-            return [match[1].replace(/^\//, '')];
+            return [match[1]];
         },
 
         matchFreeze: function(node) {
             var match = this._freezeRegex.exec(node.data.match);
-            if(match == null) {
+            if(!match) {
                 return null;
             }
 
@@ -44,7 +39,7 @@ module.exports = require('../lib/base_tech').buildFlow()
                 return null;
             }
 
-            return [exMatch.replace(/^\//, '')];
+            return [exMatch];
         }
     })
     .createTech();
