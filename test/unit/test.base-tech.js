@@ -2,6 +2,7 @@ var chai = require('chai');
 var TestNode = require('enb/lib/test/mocks/test-node');
 var FileList = require('enb/lib/file-list');
 var Base = require('../../lib/base-tech');
+var mock = require('mock-fs');
 var dummyOptions = require('../fixtures/dummy-tech-options');
 var expect = chai.expect;
 chai.use(require('chai-spies'));
@@ -52,6 +53,35 @@ describe('unit', function() {
                 it('alphanum digest option', function() {
                     base._digest = 'alphanum';
                     expect(base.getChecksumOf('foo')).equal('rwtvsvvr93tk7s18tqa9');
+                });
+            });
+
+            describe('readFile', function() {
+                beforeEach(function() {
+                    mock({'/file': 'dummy content'});
+                });
+                afterEach(function() {
+                    mock.restore();
+                });
+
+                it('should successfuly read file content', function(done) {
+                    base.readFile('/file', '/file')
+                        .then(function(content) {
+                            expect(content).to.be.equal('dummy content');
+                            done();
+                        })
+                        .fail(done);
+                });
+
+                it('should reject with error if file does not exists', function(done) {
+                    base.readFile('parent path', 'non existent path')
+                        .then(function() {
+                            done(new Error('Waiting for error, got success instead'));
+                        })
+                        .fail(function(err) {
+                            expect(err instanceof Error).to.be.equal(true);
+                            done();
+                        });
                 });
             });
 
