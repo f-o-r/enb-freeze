@@ -9,7 +9,8 @@ module.exports = require('../lib/base-tech').buildFlow()
     .defineOption('blockComments', ['<!--', '-->'])
     .methods({
         // Пути к статике в xsl начинаются от корня проекта, поддержим это
-        getFreezablePathsBase: function(carrier, suffix) {
+        getFreezablePathsBase: function(carrier, filePath) {
+            var suffix = this.getSuffix(filePath);
             if(suffix.match(/xsl$/) || suffix.match(/ent$/)) {
                 // Импорты внутри xsl(смотри recursorRegex) относительные
                 return path.dirname(carrier);

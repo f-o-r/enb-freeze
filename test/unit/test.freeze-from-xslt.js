@@ -30,19 +30,20 @@ describe('unit', function() {
                             getRootDir: function() {
                                 return '/';
                             }
-                        }
+                        },
+                        getSuffix: tech.getSuffix
                     };
                 });
 
                 it('xsl suffix check', function() {
                     expect('/foo/bar').to.be.equal(
-                        tech.getFreezablePathsBase.call(ctx, '/foo/bar/baz.xsl', 'xsl')
+                        tech.getFreezablePathsBase.call(ctx, '/foo/bar/baz.xsl', '/some/file.xsl')
                     );
                 });
 
                 it('others suffix check', function() {
                     expect('/').equal(
-                        tech.getFreezablePathsBase.call(ctx, '/foo/bar/baz.xsl', 'css')
+                        tech.getFreezablePathsBase.call(ctx, '/foo/bar/baz.xsl', '/some/file.css')
                     );
                 });
             });
